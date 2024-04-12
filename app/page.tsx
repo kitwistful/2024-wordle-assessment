@@ -1,3 +1,13 @@
+import "./styles.css";
 export default function Page() {
-    return <h1>Hello, Next.js!</h1>;
+    return (
+        <>
+            <header>
+                <h1>Wordle</h1>
+            </header>
+            <main>
+                <p>hello</p>
+            </main>
+        </>
+    );
 }
