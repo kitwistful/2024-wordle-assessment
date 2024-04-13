@@ -21,7 +21,7 @@ function WordleRow({ wordScores, isActive }: any) {
 export function WordleGrid({ wordGrid }) {
     return (
         <div className="wordle-grid">
-            {[0, 1, 2, 3, 4].map((i) => (
+            {[0, 1, 2, 3, 4, 5].map((i) => (
                 <WordleRow
                     key={"wordle-row-" + i}
                     wordScores={i < wordGrid.length ? wordGrid[i] : [null, null]}

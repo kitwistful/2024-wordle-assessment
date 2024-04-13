@@ -46,8 +46,8 @@ main > div {
 }
 
 .wordle-cell {
-    width: 5rem;
-    height: 5rem;
+    width: 4rem;
+    height: 4rem;
     margin: 0.125rem;
     justify-content: center;
     align-items: center;
@@ -89,4 +89,8 @@ button {
 
 .message-box-word {
     text-transform: uppercase;
+}
+
+.invalid-guess {
+    background-color: #550000;
 }
