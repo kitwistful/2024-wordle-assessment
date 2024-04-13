@@ -2,7 +2,7 @@ const SCORE_CLASS_MAP = ["score-wrong", "score-half-correct", "score-correct"];
 
 function WordleCell({ letter, score }: any) {
     let scoreClass = score === null ? "" : " " + SCORE_CLASS_MAP[score];
-    return <div className={"wordle-cell" + scoreClass}>{letter}</div>;
+    return <div className={"wordle-cell amatic-sc-bold" + scoreClass}>{letter}</div>;
 }
 
 function WordleRow({ wordScores, isActive }: any) {

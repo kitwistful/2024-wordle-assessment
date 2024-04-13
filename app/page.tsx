@@ -5,10 +5,12 @@ export default function Page() {
     return (
         <>
             <header>
-                <h1>Wordle</h1>
+                <h1 className="amatic-sc-bold">Wordle</h1>
             </header>
             <main>
-                <WordleGame />
+                <div className="amatic-sc-regular">
+                    <WordleGame />
+                </div>
             </main>
         </>
     );

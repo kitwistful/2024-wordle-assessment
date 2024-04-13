@@ -5,13 +5,13 @@ import $ from "jquery";
 import { WordleGrid } from "./wordle-game-components/wordle-grid";
 import { MessageBox } from "./wordle-game-components/message-box";
 import { GuessBar } from "./wordle-game-components/guess-bar";
+import { GAME_VALIDATION_STATE } from "./wordle-game-components/game-validation-state";
 
 export function WordleGame() {
-    const [gameWon, setGameWon] = useState(null);
     const [finalWord, setfinalWord] = useState("");
     const [wordGrid, setWordGrid] = useState([]);
     const [moveCount, setMoveCount] = useState(0);
-    const [isLoading, setIsLoading] = useState(false);
+    const [gameValidationState, setGameValidationState] = useState(GAME_VALIDATION_STATE.NORMAL as any);
 
     function processGuess(guess, score) {
         // TODO: find and kill all console logs
@@ -28,7 +28,7 @@ export function WordleGame() {
         // update move count
         setMoveCount(updatedGrid.length);
 
-        // Figure out if they won or not
+        // Figure out if they won or `not`
         let wordIsCorrect = true;
         for (let i = 0; i < 5; i++) {
             if (newRow[1][i] < 2) {
@@ -37,8 +37,8 @@ export function WordleGame() {
             }
         }
         if (wordIsCorrect || updatedGrid.length >= 6) {
-            setGameWon(wordIsCorrect);
             setfinalWord(finalWord);
+            return wordIsCorrect ? GAME_VALIDATION_STATE.GAME_WON : GAME_VALIDATION_STATE.GAME_LOST;
         }
     }
 
@@ -46,7 +46,7 @@ export function WordleGame() {
         // make API call
         // TODO: fix this
         console.log("calling endpoint");
-        setIsLoading(true);
+        setGameValidationState(GAME_VALIDATION_STATE.IS_LOADING);
         $.post(
             "https://wordle-apis.vercel.app/api/validate",
             {
@@ -55,11 +55,13 @@ export function WordleGame() {
             (results) => {
                 console.log(results);
                 if (results["is_valid_word"]) {
-                    processGuess(guess, results["score"]);
+                    setGameValidationState(processGuess(guess, results["score"]));
+                } else {
+                    setGameValidationState(GAME_VALIDATION_STATE.INVALID_WORD);
                 }
             }
-        ).always(() => {
-            setIsLoading(false);
+        ).fail(() => {
+            setGameValidationState(GAME_VALIDATION_STATE.ERROR);
         });
     }
 
@@ -67,8 +69,12 @@ export function WordleGame() {
     return (
         <div id="wordle-game">
             <WordleGrid wordGrid={wordGrid} />
-            <GuessBar onGuess={onGuess} gameWon={gameWon} isLoading={isLoading} />
-            <MessageBox gameWon={gameWon} word={finalWord} moveCount={moveCount} />
+            <GuessBar
+                onGuess={onGuess}
+                gameValidationState={gameValidationState}
+                setGameValidationState={setGameValidationState}
+            />
+            <MessageBox gameValidationState={gameValidationState} word={finalWord} moveCount={moveCount} />
         </div>
     );
 }
