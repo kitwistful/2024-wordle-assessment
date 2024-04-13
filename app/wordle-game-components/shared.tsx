@@ -7,3 +7,5 @@ export const GAME_VALIDATION_STATE = Object.freeze({
     GAME_LOST: 5,
     ERROR: 6,
 });
+
+export const SCORE_CLASS_MAP = ["score-wrong", "score-half-correct", "score-correct"];

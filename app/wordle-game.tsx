@@ -1,22 +1,50 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import $ from "jquery";
 import { WordleGrid } from "./wordle-game-components/wordle-grid";
 import { MessageBox } from "./wordle-game-components/message-box";
 import { GuessBar } from "./wordle-game-components/guess-bar";
-import { GAME_VALIDATION_STATE } from "./wordle-game-components/game-validation-state";
+import { GuessedLetters } from "./wordle-game-components/guessed-letters";
+import { GAME_VALIDATION_STATE } from "./wordle-game-components/shared";
 
 export function WordleGame() {
     const [finalWord, setfinalWord] = useState("");
     const [wordGrid, setWordGrid] = useState([]);
     const [moveCount, setMoveCount] = useState(0);
     const [gameValidationState, setGameValidationState] = useState(GAME_VALIDATION_STATE.NORMAL as any);
+    const [isInitializing, setIsInitializing] = useState(true);
+    const [guessedLetters, setGuessedLetters] = useState([]);
+
+    useEffect(() => {
+        setIsInitializing(false);
+    });
 
     function processGuess(guess, score) {
-        // TODO: find and kill all console logs
-        console.log("processing guess");
         const newRow = [guess, score];
+
+        // update guessed letters
+        let updatedGuessedLetters = [...guessedLetters];
+        for (let i = 0; i < 5; i++) {
+            // Add a letter if it hasn't been discovered yet.
+            let guess_id = updatedGuessedLetters.findIndex((v) => v[0] === guess[i]);
+            if (guess_id > -1) {
+                if (score[i] > updatedGuessedLetters[guess_id][1]) {
+                    updatedGuessedLetters[guess_id] = [guess[i], score[i]];
+                }
+            } else {
+                updatedGuessedLetters.push([guess[i], score[i]]);
+            }
+        }
+        updatedGuessedLetters.sort((a, b) => {
+            if (a === b) {
+                return 0;
+            } else if (a[1] == b[1]) {
+                return a[0] == b[0] ? 0 : a[0] < b[0] ? -1 : 1;
+            }
+            return a[1] == b[1] ? 0 : a[1] < b[1] ? 1 : -1;
+        });
+        setGuessedLetters(updatedGuessedLetters);
 
         // update word grid
         const updatedGrid = [...wordGrid];
@@ -44,8 +72,6 @@ export function WordleGame() {
 
     function onGuess(guess) {
         // make API call
-        // TODO: fix this
-        console.log("calling endpoint");
         setGameValidationState(GAME_VALIDATION_STATE.IS_LOADING);
         $.post(
             "https://wordle-apis.vercel.app/api/validate",
@@ -53,7 +79,6 @@ export function WordleGame() {
                 guess: guess,
             },
             (results) => {
-                console.log(results);
                 if (results["is_valid_word"]) {
                     setGameValidationState(processGuess(guess, results["score"]));
                 } else {
@@ -65,16 +90,20 @@ export function WordleGame() {
         });
     }
 
-    // const []
-    return (
-        <div id="wordle-game">
-            <WordleGrid wordGrid={wordGrid} />
-            <GuessBar
-                onGuess={onGuess}
-                gameValidationState={gameValidationState}
-                setGameValidationState={setGameValidationState}
-            />
-            <MessageBox gameValidationState={gameValidationState} word={finalWord} moveCount={moveCount} />
-        </div>
-    );
+    if (isInitializing) {
+        return <div>Loading...</div>;
+    } else {
+        return (
+            <div id="wordle-game">
+                <WordleGrid wordGrid={wordGrid} />
+                <GuessBar
+                    onGuess={onGuess}
+                    gameValidationState={gameValidationState}
+                    setGameValidationState={setGameValidationState}
+                />
+                <MessageBox gameValidationState={gameValidationState} word={finalWord} moveCount={moveCount} />
+                <GuessedLetters letters={guessedLetters} />
+            </div>
+        );
+    }
 }

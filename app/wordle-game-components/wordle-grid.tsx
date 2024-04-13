@@ -1,4 +1,4 @@
-const SCORE_CLASS_MAP = ["score-wrong", "score-half-correct", "score-correct"];
+import { SCORE_CLASS_MAP } from "./shared";
 
 function WordleCell({ letter, score }: any) {
     let scoreClass = score === null ? "" : " " + SCORE_CLASS_MAP[score];
@@ -6,7 +6,6 @@ function WordleCell({ letter, score }: any) {
 }
 
 function WordleRow({ wordScores, isActive }: any) {
-    // TODO: There's gotta be a better way to do this....
     const word = wordScores[0] || "     ";
     const scores = wordScores[1] || [null, null, null, null, null];
     return (

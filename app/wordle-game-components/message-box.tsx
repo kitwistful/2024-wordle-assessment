@@ -1,4 +1,6 @@
-import { GAME_VALIDATION_STATE } from "./game-validation-state";
+import { GAME_VALIDATION_STATE } from "./shared";
+
+const SEVERITY_OF_WIN = ["IMPOSSIBLE", "Lucky!~~", "Incredible!!", "Fantastic!", "Great Job!", "Phew, got it!"];
 
 function getMessage(gameValidationState, word: string, moveCount: number) {
     switch (gameValidationState) {
@@ -13,15 +15,16 @@ function getMessage(gameValidationState, word: string, moveCount: number) {
             return "Loading....";
 
         case GAME_VALIDATION_STATE.INVALID_WORD:
-            return "Guesses must be a real word!";
+            return "Guesses must be a real word.";
 
         case GAME_VALIDATION_STATE.NOT_ENOUGH_LETTERS:
-            return "Guesses must be five letters long!";
+            return "Guesses must be five letters long.";
 
         case GAME_VALIDATION_STATE.GAME_WON:
             return (
                 <>
-                    You guessed <span className="message-box-word">{word}</span> in {moveCount} moves! Fantastic!
+                    You guessed <span className="message-box-word">{word}</span> in {moveCount} moves!{" "}
+                    {moveCount >= 0 && moveCount < 7 ? SEVERITY_OF_WIN[moveCount] : null}
                 </>
             );
 
@@ -29,7 +32,7 @@ function getMessage(gameValidationState, word: string, moveCount: number) {
             return "So close! Ran out of moves";
 
         case GAME_VALIDATION_STATE.ERROR:
-            return "Sorry, there was some kind of error.";
+            return "Sorry, there was some kind of problem";
 
         default:
             console.error('Unrecognized game state: "' + gameValidationState + '"');

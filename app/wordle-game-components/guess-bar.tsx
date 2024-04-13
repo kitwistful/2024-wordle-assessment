@@ -1,15 +1,19 @@
-import { useState } from "react";
-import { GAME_VALIDATION_STATE } from "./game-validation-state";
+import { useState, useEffect, useRef } from "react";
+import { GAME_VALIDATION_STATE } from "./shared";
 
 export function GuessBar({ onGuess, gameValidationState, setGameValidationState }) {
     const [isValid, setIsValid] = useState(true);
     const validation_re = /[a-zA-Z]{5}/;
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        inputRef.current.focus();
+    });
 
     function validateGuess(guess) {
         // TODO: why isn't isValid getting updated?
         const passedValidation = validation_re.test(guess);
         setIsValid(passedValidation);
-        console.log(guess + " " + passedValidation + " " + isValid);
         return passedValidation;
     }
 
@@ -47,6 +51,7 @@ export function GuessBar({ onGuess, gameValidationState, setGameValidationState 
         <div className="guess-bar">
             <form onSubmit={handleSubmit}>
                 <input
+                    ref={inputRef}
                     id="guess"
                     onChange={handleInputChange}
                     type="text"
