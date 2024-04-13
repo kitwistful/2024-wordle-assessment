@@ -3,6 +3,41 @@
     --main-font-weight: 400;
     --main-bold-font-weight: 700;
 }
+
+@keyframes wordle-fade-in {
+    from {
+        opacity: 0%;
+    }
+    to {
+        opacity: 100%;
+    }
+}
+
+@keyframes wordle-flip-in {
+    from {
+        transform: rotateX(0turn);
+    }
+    to {
+        transform: rotateX(3turn);
+    }
+}
+
+@keyframes wordle-flash-red {
+    from {
+        background-color: transparent;
+    }
+    20% {
+        background-color: #550000;
+    }
+    to {
+        background-color: transparent;
+    }
+}
+
+.wordle-fade-in {
+    animation-name: 1s ease-in wordle-fade-in;
+}
+
 body {
     background-color: #010101;
     color: #f3f3f3;
@@ -10,10 +45,6 @@ body {
     text-align: center;
     font-family: var(--main-font-family);
     font-weight: var(--main-font-weight);
-}
-
-#wordle-game > div {
-    margin: 0 0 0.5rem 0;
 }
 
 .guess-bar {
@@ -33,6 +64,7 @@ header {
 h1 {
     margin: 0;
     font-weight: 100;
+    animation: 1s ease-in wordle-fade-in;
 }
 
 main {
@@ -47,22 +79,33 @@ main > div {
     padding: 0.5rem 0 0 0;
 }
 
+.wordle-game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.wordle-game > div {
+    margin: 0 0 0.5rem 0;
+}
+
 .wordle-row {
     display: flex;
+    animation: 1s ease-in wordle-fade-in;
 }
 
 .wordle-row.active-row > .wordle-cell {
     border: solid transparent;
-}
-
-.wordle-row > .wordle-cell {
-    border: solid #3a3a3c;
-    display: inline-flex;
+    animation-name: wordle-flip-in;
+    animation-duration: 1s;
+    animation-timing-function: linear;
 }
 
 .wordle-cell {
-    width: 4rem;
-    height: 4rem;
+    border: solid #3a3a3c;
+    display: inline-flex;
+    width: 3.5rem;
+    height: 3.5rem;
     margin: 0.125rem;
     justify-content: center;
     align-items: center;
@@ -97,8 +140,8 @@ main > div {
     text-transform: uppercase;
 }
 
-.invalid-guess {
-    background-color: #550000;
+#guess.invalid-guess {
+    animation: 0.5s wordle-flash-red ease-in;
 }
 
 .guessed-letter {
@@ -110,4 +153,5 @@ main > div {
     font-weight: 700;
     margin: 0 0.125rem 0 0.125rem;
     border-radius: 0.25rem;
+    text-transform: capitalize;
 }

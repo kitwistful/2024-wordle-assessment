@@ -1,6 +1,14 @@
 import { GAME_VALIDATION_STATE } from "./shared";
 
-const SEVERITY_OF_WIN = ["IMPOSSIBLE", "Lucky!~~", "Incredible!!", "Fantastic!", "Great Job!", "Phew, got it!"];
+const SEVERITY_OF_WIN = [
+    "IMPOSSIBLE",
+    "Lucky~~!",
+    "Incredible!!",
+    "Fantastic!",
+    "Great Job!",
+    "Good Work!",
+    "Phew, got it!",
+];
 
 function getMessage(gameValidationState, word: string, moveCount: number) {
     switch (gameValidationState) {
@@ -23,8 +31,8 @@ function getMessage(gameValidationState, word: string, moveCount: number) {
         case GAME_VALIDATION_STATE.GAME_WON:
             return (
                 <>
-                    You guessed <span className="message-box-word">{word}</span> in {moveCount} moves!{" "}
-                    {moveCount >= 0 && moveCount < 7 ? SEVERITY_OF_WIN[moveCount] : null}
+                    You guessed <span className="message-box-word">{word}</span> in {moveCount} move
+                    {moveCount > 1 ? "s" : ""}! {moveCount >= 0 && moveCount < 7 ? SEVERITY_OF_WIN[moveCount] : null}
                 </>
             );
 
@@ -42,5 +50,5 @@ function getMessage(gameValidationState, word: string, moveCount: number) {
 
 export function MessageBox({ gameValidationState, word, moveCount }) {
     let message: any = getMessage(gameValidationState, word, moveCount);
-    return <div id="wordle-message-box">{message}</div>;
+    return <div className="wordle-message-box">{message}</div>;
 }

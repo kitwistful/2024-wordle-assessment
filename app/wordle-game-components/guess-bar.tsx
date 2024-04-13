@@ -11,8 +11,8 @@ export function GuessBar({ onGuess, gameValidationState, setGameValidationState 
     });
 
     function validateGuess(guess) {
-        // TODO: why isn't isValid getting updated?
         const passedValidation = validation_re.test(guess);
+        console.log(passedValidation);
         setIsValid(passedValidation);
         return passedValidation;
     }
@@ -57,7 +57,9 @@ export function GuessBar({ onGuess, gameValidationState, setGameValidationState 
                     type="text"
                     maxLength={5}
                     disabled={checkDisabled()}
-                    className={isValid ? "" : " invalid-guess"}
+                    className={
+                        isValid && gameValidationState !== GAME_VALIDATION_STATE.INVALID_WORD ? "" : " invalid-guess"
+                    }
                 />
             </form>
         </div>

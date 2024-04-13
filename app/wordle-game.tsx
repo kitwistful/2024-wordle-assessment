@@ -27,13 +27,14 @@ export function WordleGame() {
         let updatedGuessedLetters = [...guessedLetters];
         for (let i = 0; i < 5; i++) {
             // Add a letter if it hasn't been discovered yet.
-            let guess_id = updatedGuessedLetters.findIndex((v) => v[0] === guess[i]);
+            let guess_ch = guess[i].toUpperCase();
+            let guess_id = updatedGuessedLetters.findIndex((v) => v[0] === guess_ch);
             if (guess_id > -1) {
                 if (score[i] > updatedGuessedLetters[guess_id][1]) {
-                    updatedGuessedLetters[guess_id] = [guess[i], score[i]];
+                    updatedGuessedLetters[guess_id] = [guess_ch, score[i]];
                 }
             } else {
-                updatedGuessedLetters.push([guess[i], score[i]]);
+                updatedGuessedLetters.push([guess_ch, score[i]]);
             }
         }
         updatedGuessedLetters.sort((a, b) => {
@@ -91,10 +92,10 @@ export function WordleGame() {
     }
 
     if (isInitializing) {
-        return <div>Loading...</div>;
+        return <div className="wordle-fade-in">Loading...</div>;
     } else {
         return (
-            <div id="wordle-game">
+            <div className="wordle-game">
                 <WordleGrid wordGrid={wordGrid} />
                 <GuessBar
                     onGuess={onGuess}
