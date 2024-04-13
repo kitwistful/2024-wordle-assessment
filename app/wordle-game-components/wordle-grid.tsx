@@ -7,28 +7,26 @@ function WordleCell({ letter, score }: any) {
 
 function WordleRow({ wordScores, isActive }: any) {
     // TODO: There's gotta be a better way to do this....
-    const letterloop = [0, 1, 2, 3, 4];
-    const word = wordScores === null ? "     " : wordScores[0];
-    const scores = wordScores === null ? [null, null, null, null, null] : wordScores[1];
+    const word = wordScores[0] || "     ";
+    const scores = wordScores[1] || [null, null, null, null, null];
     return (
         <div className={"wordle-row" + (isActive ? " active-row" : "")}>
-            {letterloop.map((ch, i) => (
-                <WordleCell letter={word.charAt(ch)} score={scores[i]} />
+            {[0, 1, 2, 3, 4].map((ch, i) => (
+                <WordleCell key={"wordle-cell-" + i} letter={word.charAt(ch)} score={scores[i]} />
             ))}
         </div>
     );
 }
 
-export function WordleGrid() {
-    let words = [
-        ["SORTA", [1, 2, 2, 0, 0]],
-        ["GUESS", [0, 0, 0, 0, 2]],
-        ["WORDS", [2, 2, 2, 2, 2]],
-    ];
+export function WordleGrid({ wordGrid }) {
     return (
         <div className="wordle-grid">
             {[0, 1, 2, 3, 4].map((i) => (
-                <WordleRow wordScores={i < words.length ? words[i] : null} isActive={i < words.length} />
+                <WordleRow
+                    key={"wordle-row-" + i}
+                    wordScores={i < wordGrid.length ? wordGrid[i] : [null, null]}
+                    isActive={i < wordGrid.length}
+                />
             ))}
         </div>
     );

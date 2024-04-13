@@ -3,6 +3,11 @@ body {
     color: #f3f3f3;
 }
 
+.guess-bar {
+    display: flex;
+    justify-content: center;
+}
+
 header {
     display: flex;
     justify-content: center;
@@ -74,6 +79,12 @@ main > div {
 
 button {
     font-family: "DM Mono", monospace;
+}
+
+.wordle-message-box {
+    display: flex;
+    justify-content: center;
+    text-align: center;
 }
 
 .message-box-word {

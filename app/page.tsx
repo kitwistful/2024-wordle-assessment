@@ -1,7 +1,5 @@
 import "./styles.css";
-import { WordleGrid } from "./game-components/wordle";
-import { MessageBox } from "./game-components/message-box";
-import { GuessBar } from "./game-components/guess-bar";
+import { WordleGame } from "./wordle-game";
 
 export default function Page() {
     return (
@@ -10,9 +8,7 @@ export default function Page() {
                 <h1>Wordle</h1>
             </header>
             <main>
-                <WordleGrid />
-                <GuessBar />
-                <MessageBox success={true} word="WORDS" />
+                <WordleGame />
             </main>
         </>
     );
