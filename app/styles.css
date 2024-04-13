@@ -75,3 +75,7 @@ main > div {
 button {
     font-family: "DM Mono", monospace;
 }
+
+.message-box-word {
+    text-transform: uppercase;
+}

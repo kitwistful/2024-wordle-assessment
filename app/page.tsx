@@ -1,8 +1,9 @@
 import "./styles.css";
-import { WordleGrid } from "./wordle.tsx";
+import { WordleGrid } from "./game-components/wordle";
+import { MessageBox } from "./game-components/message-box";
+import { GuessBar } from "./game-components/guess-bar";
 
 export default function Page() {
-    // TODO: create form & success message components
     return (
         <>
             <header>
@@ -10,15 +11,8 @@ export default function Page() {
             </header>
             <main>
                 <WordleGrid />
-                <div>
-                    <form action="">
-                        <label for="guess"></label>
-                        <input id="guess" type="text" maxlength="5" />
-                        <button>Enter</button>
-                    </form>
-                </div>
-                <div id="you-won">You guessed YYYYY in x moves! Fantastic!</div>
-                <div id="you-lost">So close! The word was YYYYY!</div>
+                <GuessBar />
+                <MessageBox success={true} word="WORDS" />
             </main>
         </>
     );
