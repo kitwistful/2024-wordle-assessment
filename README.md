@@ -1,6 +1,6 @@
 # Solution
 
-I decided to use the next.js framework, so this is run with `npm run dev` or whatever environment you please.
+I decided to use the next.js framework. To deploy locally, the steps are: `npm install`. This may need to be followed with `npm install next@latest react@latest react-dom@latest`. Then run with `npm run dev`.
 
 # Introduction
 
